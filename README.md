@@ -1,73 +1,21 @@
-# React + TypeScript + Vite
+🌸 Women Mentor Matchmaking App
+A supportive platform connecting women with mentors who empower, guide, and uplift.
+✨ Overview
+This project is a React + TypeScript web application designed to help women find mentors who align with their goals, interests, and career paths. The app focuses on creating meaningful, supportive connections — whether for tech, entrepreneurship, leadership, wellness, or personal growth.
+The goal is to build a safe, inclusive space where women can match with mentors who truly understand their journey.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🎯 Features (Planned & In Progress)
+- 🔍 Mentor discovery — browse mentors by skills, industry, or interests
+- 💬 Profile matching — personalized recommendations based on user preferences
+- 🧭 Onboarding flow — simple signup for mentors and mentees
+- 🛠️ Modern UI — clean, accessible design built with React + TypeScript
+- 📱 Responsive layout — works on desktop and mobile
+- 🔐 Future: Authentication — secure login for mentors and mentees
+- 📅 Future: Scheduling — book sessions or meetings directly in the ap
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+🧰 Tech Stack
+- React (with Vite)
+- TypeScript
+- SWC (fast compiler)
+- CSS / Tailwind (optional)
+- Node.js + npm
