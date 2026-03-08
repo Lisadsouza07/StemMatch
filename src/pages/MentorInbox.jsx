@@ -1,132 +1,99 @@
-import React, { useState } from "react";
-import MatchToast from "../components/MatchToast.jsx";
+import React from "react";
 import { useGlobal } from "../context/GlobalContext.jsx";
 
-export default function MentorInbox() {
+export default function MentorInbox({ onSelect }) {
   const { state, dispatch } = useGlobal();
-  const requests = state.pendingRequests;
-
-  const [showToast, setShowToast] = useState(false);
-  const [matchedName, setMatchedName] = useState("");
 
   const handleAccept = (mentee) => {
-    setMatchedName(mentee.name);
-    setShowToast(true);
-
-    dispatch({
-      type: "ACCEPT_REQUEST",
-      payload: mentee,
-    });
+    dispatch({ type: "ACCEPT_REQUEST", payload: mentee });
   };
 
   const handleDecline = (mentee) => {
-    dispatch({
-      type: "DECLINE_REQUEST",
-      payload: mentee,
-    });
+    dispatch({ type: "DECLINE_REQUEST", payload: mentee });
   };
 
   return (
     <div
       style={{
-        width: "100%",
+        padding: 20,
+        background: "#F0F7FF",
         minHeight: "100vh",
-        padding: "20px",
-        background: "#213448",
-        color: "white",
       }}
     >
-      <h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 20 }}>
-        Mentor Requests
-      </h2>
+      <h2 style={{ color: "#1A1A1A", marginBottom: 20 }}>Incoming Requests</h2>
 
-      {requests.length === 0 ? (
-        <div
-          style={{
-            marginTop: 80,
-            textAlign: "center",
-            fontSize: 18,
-            color: "#94B4C1",
-          }}
-        >
-          No pending requests right now.
-        </div>
-      ) : (
-        requests.map((mentee) => (
-          <div
-            key={mentee.id}
-            style={{
-              background: "rgba(255,255,255,0.08)",
-              padding: 16,
-              borderRadius: 16,
-              marginBottom: 16,
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-              backdropFilter: "blur(8px)",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
-            <img
-              src={mentee.photo}
-              alt={mentee.name}
-              style={{
-                width: 70,
-                height: 70,
-                borderRadius: 14,
-                objectFit: "cover",
-              }}
-            />
-
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 18, fontWeight: 700 }}>
-                {mentee.name}, {mentee.age}
-              </div>
-              <div style={{ fontSize: 14, color: "#BDE8F5" }}>
-                {mentee.aboutShort}
-              </div>
-            </div>
-
-            <div style={{ display: "flex", gap: 10 }}>
-              <button
-                onClick={() => handleDecline(mentee)}
-                style={{
-                  padding: "8px 14px",
-                  borderRadius: 10,
-                  border: "1px solid #547792",
-                  background: "transparent",
-                  color: "#547792",
-                  cursor: "pointer",
-                  fontWeight: 600,
-                }}
-              >
-                Decline
-              </button>
-
-              <button
-                onClick={() => handleAccept(mentee)}
-                style={{
-                  padding: "8px 14px",
-                  borderRadius: 10,
-                  border: "none",
-                  background: "#1C4D8D",
-                  color: "white",
-                  cursor: "pointer",
-                  fontWeight: 600,
-                }}
-              >
-                Accept
-              </button>
-            </div>
-          </div>
-        ))
+      {state.pendingRequests.length === 0 && (
+        <p style={{ color: "#4A5568" }}>No pending requests right now.</p>
       )}
 
-      <MatchToast
-        show={showToast}
-        mentorName={matchedName}
-        onClose={() => setShowToast(false)}
-      />
+      {state.pendingRequests.map((mentee) => (
+        <div
+          key={mentee.id}
+          style={{
+            background: "#FFFFFF",
+            border: "1px solid #E2E8F0",
+            borderRadius: 12,
+            padding: 16,
+            marginBottom: 16,
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+          }}
+        >
+          <img
+            src={mentee.photo}
+            alt={mentee.name}
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 16, fontWeight: 600, color: "#1A1A1A" }}>
+              {mentee.name}
+            </div>
+            <div style={{ fontSize: 14, color: "#4A5568" }}>
+              {mentee.field}
+            </div>
+          </div>
+
+          <button
+            onClick={() => handleAccept(mentee)}
+            style={{
+              padding: "8px 14px",
+              borderRadius: 8,
+              border: "none",
+              background: "#059669",
+              color: "white",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 600,
+            }}
+          >
+            Accept
+          </button>
+
+          <button
+            onClick={() => handleDecline(mentee)}
+            style={{
+              padding: "8px 14px",
+              borderRadius: 8,
+              border: "1px solid #EF4444",
+              background: "transparent",
+              color: "#EF4444",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 600,
+            }}
+          >
+            Decline
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
+

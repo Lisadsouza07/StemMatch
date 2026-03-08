@@ -19,18 +19,12 @@ export default function SwipePage() {
   const handleNext = () => {
     if (index < mentors.length - 1) {
       setIndex(index + 1);
-    } else {
-      // empty state will show automatically
     }
-  };
-
-  const handleSkip = () => {
-    handleNext();
   };
 
   const handleRequest = () => {
     dispatch({
-      type: "REQUEST_MENTORSHIP",
+      type: "SEND_REQUEST",
       payload: currentMentor,
     });
 
@@ -47,7 +41,7 @@ export default function SwipePage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        background: "#213448",
+        background: "#F0F7FF",
       }}
     >
       {currentMentor ? (
@@ -55,11 +49,11 @@ export default function SwipePage() {
           <MentorCard
             mentor={currentMentor}
             onExpand={() => setExpandedMentor(currentMentor)}
-            onSwipeLeft={handleSkip}
+            onSwipeLeft={handleNext}
             onSwipeRight={handleRequest}
           />
 
-          <SwipeControls onSkip={handleSkip} onRequest={handleRequest} />
+          <SwipeControls onSkip={handleNext} onRequest={handleRequest} />
         </>
       ) : (
         <EmptyState onReset={() => setIndex(0)} />
@@ -82,3 +76,4 @@ export default function SwipePage() {
     </div>
   );
 }
+

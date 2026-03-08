@@ -1,34 +1,42 @@
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import mentorSeedData from "../data/mentors.js";
 import userSeedData from "../data/users.js";
 
-// --- INITIAL STATE ---
+const GlobalContext = createContext();
+
 const initialState = {
   mentors: mentorSeedData,
-  pendingRequests: userSeedData.pendingRequests,
+  pendingRequests: userSeedData.pendingRequests, // mentors see these
+  sentRequests: [], // mentees see these
   acceptedMatches: [],
   messages: {},
-  currentUser: { id: 1, name: "Muna", role: "mentee" },
 };
 
-
-// --- REDUCER ---
 function reducer(state, action) {
   switch (action.type) {
-    case "LOAD_DATA":
-      return { ...state, ...action.payload };
-
-    case "REQUEST_MENTORSHIP":
+    case "SEND_REQUEST":
       return {
         ...state,
+        sentRequests: [...state.sentRequests, action.payload],
         pendingRequests: [...state.pendingRequests, action.payload],
+      };
+
+    case "CANCEL_REQUEST":
+      return {
+        ...state,
+        sentRequests: state.sentRequests.filter(
+          (m) => m.id !== action.payload.id
+        ),
+        pendingRequests: state.pendingRequests.filter(
+          (m) => m.id !== action.payload.id
+        ),
       };
 
     case "ACCEPT_REQUEST":
       return {
         ...state,
         pendingRequests: state.pendingRequests.filter(
-          (r) => r.id !== action.payload.id
+          (m) => m.id !== action.payload.id
         ),
         acceptedMatches: [...state.acceptedMatches, action.payload],
       };
@@ -37,7 +45,7 @@ function reducer(state, action) {
       return {
         ...state,
         pendingRequests: state.pendingRequests.filter(
-          (r) => r.id !== action.payload.id
+          (m) => m.id !== action.payload.id
         ),
       };
 
@@ -45,39 +53,21 @@ function reducer(state, action) {
       return {
         ...state,
         messages: {
-          ...state.messages,
-          [action.payload.matchId]: [
-            ...(state.messages[action.payload.matchId] || []),
-            action.payload.message,
-          ],
-        },
-      };
+        ...state.messages,
+        [action.payload.matchId]: [
+          ...(state.messages[action.payload.matchId] || []),
+          action.payload.message,
+        ],
+      },
+    };
 
     default:
       return state;
   }
 }
 
-// --- CONTEXT ---
-const GlobalContext = createContext();
-
-// --- PROVIDER ---
 export function GlobalProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // Load from localStorage on first render
-  useEffect(() => {
-    const saved = localStorage.getItem("menmatch-data");
-    if (saved) {
-      dispatch({ type: "LOAD_DATA", payload: JSON.parse(saved) });
-    }
-  }, []);
-
-  // Save to localStorage whenever state changes
-  useEffect(() => {
-    localStorage.setItem("menmatch-data", JSON.stringify(state));
-  }, [state]);
-
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
@@ -85,7 +75,5 @@ export function GlobalProvider({ children }) {
   );
 }
 
-// --- CUSTOM HOOK ---
-export function useGlobal() {
-  return useContext(GlobalContext);
-}
+export const useGlobal = () => useContext(GlobalContext);
+

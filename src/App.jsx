@@ -8,6 +8,7 @@ import MentorInbox from "./pages/MentorInbox.jsx";
 import MatchesPage from "./pages/MatchesPage.jsx";
 import ChatPage from "./pages/ChatPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import PendingPage from "./pages/PendingPage.jsx";
 
 import Avatar from "./components/Avatar.jsx";
 import { useGlobal } from "./context/GlobalContext.jsx";
@@ -16,7 +17,7 @@ import { useGlobal } from "./context/GlobalContext.jsx";
 function Sidebar({ active, onNav, user, onLogout }) {
   const isMentor = user?.role === "mentor";
 
-  const NAV = isMentor
+  const NAV = user.role === "mentor"
     ? [
         { id: "inbox", icon: "📥", label: "Requests" },
         { id: "matches", icon: "💬", label: "Matches" },
@@ -24,25 +25,29 @@ function Sidebar({ active, onNav, user, onLogout }) {
       ]
     : [
         { id: "swipe", icon: "✨", label: "Find Mentors" },
+        { id: "pending", icon: "⏳", label: "Pending" },
         { id: "matches", icon: "💬", label: "Matches" },
         { id: "profile", icon: "👤", label: "Profile" },
       ];
 
+
   return (
     <div
-      style={{
-        width: 220,
-        background: "#0F0A1E",
-        borderRight: "1px solid rgba(255,255,255,0.06)",
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-        top: 0,
-        zIndex: 100,
-      }}
-    >
+  style={{
+    width: 220,
+    background: "#DCEBFF",
+    color: "#1A1A1A",
+    borderRight: "1px solid #BBD7FF",
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh",
+    position: "fixed",
+    left: 0,
+    top: 0,
+    zIndex: 100,
+  }}
+>
+
       <div
         style={{
           padding: "24px 20px 16px",
@@ -67,32 +72,30 @@ function Sidebar({ active, onNav, user, onLogout }) {
       <nav style={{ flex: 1, padding: "12px 0", overflowY: "auto" }}>
         {NAV.map((item) => (
           <button
-            key={item.id}
-            onClick={() => onNav(item.id)}
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              padding: "11px 20px",
-              background:
-                active === item.id ? "rgba(124,58,237,0.15)" : "transparent",
-              border: "none",
-              borderRight:
-                active === item.id
-                  ? "3px solid #7C3AED"
-                  : "3px solid transparent",
-              color: active === item.id ? "#A78BFA" : "#6B7280",
-              cursor: "pointer",
-              fontSize: 14,
-              fontWeight: active === item.id ? 600 : 400,
-              textAlign: "left",
-              transition: "all 0.15s",
-            }}
-          >
-            <span>{item.icon}</span>
-            {item.label}
-          </button>
+  key={item.id}
+  onClick={() => onNav(item.id)}
+  style={{
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    padding: "11px 20px",
+    background: active === item.id ? "#BBD7FF" : "transparent",
+    border: "none",
+    borderRight:
+      active === item.id ? "3px solid #1C4D8D" : "3px solid transparent",
+    color: active === item.id ? "#1C4D8D" : "#1A1A1A",
+    cursor: "pointer",
+    fontSize: 14,
+    fontWeight: active === item.id ? 600 : 400,
+    textAlign: "left",
+    transition: "all 0.15s",
+  }}
+>
+  <span style={{ color: "#1C4D8D" }}>{item.icon}</span>
+  {item.label}
+</button>
+
         ))}
       </nav>
 
@@ -222,7 +225,10 @@ export default function App() {
         {page === "swipe" && user.role === "mentee" && <SwipePage />}
 
         {page === "inbox" && user.role === "mentor" && <MentorInbox />}
-
+        
+        {page === "pending" && user.role === "mentee" && (
+          <PendingPage user={user} />
+        )}
         {page === "matches" && (
           <MatchesPage onOpenChat={(mentor) => setActiveChat(mentor)} />
         )}
@@ -230,6 +236,7 @@ export default function App() {
         {page === "profile" && (
           <ProfilePage user={user} setUser={setUser} />
         )}
+
       </main>
     </div>
   );

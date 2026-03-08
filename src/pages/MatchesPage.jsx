@@ -3,7 +3,7 @@ import { useGlobal } from "../context/GlobalContext.jsx";
 
 export default function MatchesPage({ onOpenChat }) {
   const { state } = useGlobal();
-  const matches = state.acceptedMatches;
+  const matches = state.acceptedMatches || [];
 
   return (
     <div

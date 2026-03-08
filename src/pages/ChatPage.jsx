@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useGlobal } from "../context/GlobalContext.jsx";
 
-export default function ChatPage({ mentor, onBack }) {
+export default function ChatPage({ mentor, user, onBack }) {
   const { state, dispatch } = useGlobal();
   const [text, setText] = useState("");
 
-  const matchId = mentor.id; // unique chat ID per mentor
-  const messages = state.messages[matchId] || [];
+  const matchId = mentor.id;
+  const messages = state.messages?.[matchId] || [];
 
   const bottomRef = useRef(null);
 
@@ -22,9 +22,10 @@ export default function ChatPage({ mentor, onBack }) {
       payload: {
         matchId,
         message: {
-          senderId: state.currentUser.id,
+          id: Date.now(),
           text,
-          timestamp: Date.now(),
+          senderId: user?.id, // FIXED
+          timestamp: new Date().toISOString(),
         },
       },
     });
@@ -39,19 +40,19 @@ export default function ChatPage({ mentor, onBack }) {
         height: "100vh",
         display: "flex",
         flexDirection: "column",
-        background: "#1A2533",
-        color: "white",
+        background: "#F0F7FF",
+        color: "#1A1A1A",
       }}
     >
       {/* HEADER */}
       <div
         style={{
           padding: "16px 20px",
-          background: "#213448",
+          background: "#DCEBFF",
           display: "flex",
           alignItems: "center",
           gap: 12,
-          borderBottom: "1px solid rgba(255,255,255,0.1)",
+          borderBottom: "1px solid #BBD7FF",
         }}
       >
         <button
@@ -59,7 +60,7 @@ export default function ChatPage({ mentor, onBack }) {
           style={{
             background: "none",
             border: "none",
-            color: "#BDE8F5",
+            color: "#1C4D8D",
             fontSize: 16,
             cursor: "pointer",
           }}
@@ -92,20 +93,22 @@ export default function ChatPage({ mentor, onBack }) {
           gap: 12,
         }}
       >
-        {messages.map((msg, i) => {
-          const isMe = msg.senderId === state.currentUser.id;
+        {messages.map((msg) => {
+          const isMe = msg.senderId === user?.id; // FIXED
 
           return (
             <div
-              key={i}
+              key={msg.id}
               style={{
                 alignSelf: isMe ? "flex-end" : "flex-start",
-                background: isMe ? "#1C4D8D" : "rgba(255,255,255,0.1)",
+                background: isMe ? "#1C4D8D" : "#FFFFFF",
+                color: isMe ? "white" : "#1A1A1A",
                 padding: "10px 14px",
                 borderRadius: 14,
                 maxWidth: "70%",
                 fontSize: 15,
                 lineHeight: 1.4,
+                border: isMe ? "none" : "1px solid #E2E8F0",
               }}
             >
               {msg.text}
@@ -122,8 +125,8 @@ export default function ChatPage({ mentor, onBack }) {
           padding: "14px 20px",
           display: "flex",
           gap: 10,
-          background: "#213448",
-          borderTop: "1px solid rgba(255,255,255,0.1)",
+          background: "#DCEBFF",
+          borderTop: "1px solid #BBD7FF",
         }}
       >
         <input
@@ -134,11 +137,11 @@ export default function ChatPage({ mentor, onBack }) {
             flex: 1,
             padding: "12px 14px",
             borderRadius: 12,
-            border: "none",
+            border: "1px solid #CBD5E0",
             outline: "none",
             fontSize: 15,
-            background: "rgba(255,255,255,0.1)",
-            color: "white",
+            background: "#FFFFFF",
+            color: "#1A1A1A",
           }}
         />
 
