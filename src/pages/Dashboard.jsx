@@ -1,7 +1,10 @@
 import React from "react";
-import Avatar from "../components/Avatar";
-import ProgressBar from "../components/ProgressBar";
-import Badge from "../components/Badge";
+
+import Avatar from "../components/Avatar.jsx";
+import ScoreBar from "../components/ScoreBar.jsx";
+import ProgressBar from "../components/ProgressBar.jsx";
+import Badge from "../components/Badge.jsx";
+
 
 
 // ─── DASHBOARD ────────────────────────────────────────────────────────────────
@@ -43,7 +46,9 @@ function Dashboard({ user, matches, meetings, goals, onNav }) {
                 <div style={{ color:"#E5E7EB", fontSize:13, fontWeight:600 }}>{m.name}</div>
                 <div style={{ color:"#6B7280", fontSize:11 }}>{m.field}</div>
               </div>
-              <div style={{ background:"rgba(16,185,129,0.15)", color:"#10B981", borderRadius:20, padding:"2px 10px", fontSize:12, fontWeight:700 }}>{m.score}%</div>
+              <div style={{ width: 80 }}>
+                <ScoreBar score={m.score} />
+              </div>
             </div>
           ))}
         </div>

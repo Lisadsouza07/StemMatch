@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-
+import Avatar from "../components/Avatar.jsx";
+import Badge from "../components/Badge.jsx";
 
 // ─── COMMUNITY PAGE ───────────────────────────────────────────────────────────
 function CommunityPage({ user, posts, setPosts }) {

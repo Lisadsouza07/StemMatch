@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import Avatar from "../components/Avatar.jsx";
 
 // ─── MEETINGS PAGE ────────────────────────────────────────────────────────────
 function MeetingsPage({ meetings, setMeetings, matches }) {

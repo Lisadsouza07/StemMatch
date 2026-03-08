@@ -9,6 +9,8 @@ import MeetingsPage from "./pages/MeetingsPage.jsx";
 import GoalsPage from "./pages/GoalsPage.jsx";
 import CommunityPage from "./pages/CommunityPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import Avatar from "./components/Avatar.jsx";
+
 
 
 // ─── SAMPLE DATA ──────────────────────────────────────────────────────────────

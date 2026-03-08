@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+
 import Avatar from "../components/Avatar.jsx";
+import ScoreBar from "../components/ScoreBar.jsx";
+import Badge from "../components/Badge.jsx";
 
 // ─── MATCHES PAGE ─────────────────────────────────────────────────────────────
 function MatchesPage({ matches, onMessage }) {

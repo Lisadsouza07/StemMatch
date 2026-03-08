@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+
+import Avatar from "../components/Avatar.jsx";
 
 
 // ─── MESSAGES PAGE ────────────────────────────────────────────────────────────

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-
+import Avatar from "../components/Avatar.jsx";
+import Badge from "../components/Badge.jsx";
 
 // ─── PROFILE PAGE ─────────────────────────────────────────────────────────────
 function ProfilePage({ user, setUser }) {
@@ -11,6 +12,50 @@ function ProfilePage({ user, setUser }) {
 
   const toggleSkill = (s) => setForm(f => ({ ...f, skills: f.skills?.includes(s) ? f.skills.filter(x=>x!==s) : [...(f.skills||[]), s] }));
   const toggleGoal = (g) => setForm(f => ({ ...f, goals: f.goals?.includes(g) ? f.goals.filter(x=>x!==g) : [...(f.goals||[]), g] }));
+
+  const FIELDS = [
+  "Computer Science",
+  "Software Engineering",
+  "Data Science",
+  "Cybersecurity",
+  "AI / Machine Learning",
+  "Biotech",
+  "Mechanical Engineering",
+  "Electrical Engineering",
+  "Physics",
+  "Mathematics",
+  "Chemistry",
+];
+const TIMEZONES = [
+  "UTC−8 (PST)",
+  "UTC−7 (MST)",
+  "UTC−6 (CST)",
+  "UTC−5 (EST)",
+  "UTC+0 (GMT)",
+  "UTC+1 (CET)",
+  "UTC+5:30 (IST)",
+];
+const SKILLS_LIST = [
+  "Python",
+  "JavaScript",
+  "C++",
+  "Machine Learning",
+  "Data Analysis",
+  "UI/UX Design",
+  "Project Management",
+  "Public Speaking",
+];
+const GOALS_LIST = [
+  "Get a mentor",
+  "Improve coding skills",
+  "Build a portfolio",
+  "Prepare for internships",
+  "Grow confidence",
+  "Explore STEM fields",
+];
+
+
+
 
   return (
     <div>
