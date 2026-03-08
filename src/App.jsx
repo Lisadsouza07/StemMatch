@@ -13,10 +13,13 @@ import PendingPage from "./pages/PendingPage.jsx";
 import Avatar from "./components/Avatar.jsx";
 import { useGlobal } from "./context/GlobalContext.jsx";
 
+const BLUE_DARK = "#0A2463";
+const BLUE_MID = "#1B5BE8";
+const BLUE_PALE = "#D6E4FF";
+const WHITE = "#FFFFFF";
+
 // ─── SIDEBAR ──────────────────────────────────────────────────────────────────
 function Sidebar({ active, onNav, user, onLogout }) {
-  const isMentor = user?.role === "mentor";
-
   const NAV = user.role === "mentor"
     ? [
         { id: "inbox", icon: "📥", label: "Requests" },
@@ -24,113 +27,85 @@ function Sidebar({ active, onNav, user, onLogout }) {
         { id: "profile", icon: "👤", label: "Profile" },
       ]
     : [
-        { id: "swipe", icon: "✨", label: "Find Mentors" },
+        { id: "swipe", icon: "✦", label: "Find Mentors" },
         { id: "pending", icon: "⏳", label: "Pending" },
         { id: "matches", icon: "💬", label: "Matches" },
         { id: "profile", icon: "👤", label: "Profile" },
       ];
 
-
   return (
-    <div
-  style={{
-    width: 220,
-    background: "#DCEBFF",
-    color: "#1A1A1A",
-    borderRight: "1px solid #BBD7FF",
-    display: "flex",
-    flexDirection: "column",
-    height: "100vh",
-    position: "fixed",
-    left: 0,
-    top: 0,
-    zIndex: 100,
-  }}
->
+    <div style={{
+      width: 240,
+      background: BLUE_DARK,
+      display: "flex",
+      flexDirection: "column",
+      height: "100vh",
+      position: "fixed",
+      left: 0,
+      top: 0,
+      zIndex: 100,
+      padding: "28px 18px",
+      fontFamily: "'Sora', sans-serif",
+    }}>
 
-      <div
-        style={{
-          padding: "24px 20px 16px",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 18,
-            fontWeight: 800,
-            color: "#F9FAFB",
-            fontFamily: "'Playfair Display',serif",
-          }}
-        >
-          🔬 StemMatch
-        </div>
-        <div style={{ fontSize: 11, color: "#4B5563", marginTop: 2 }}>
-          Women in STEM
+      {/* Logo */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
+        <div style={{
+          width: 40, height: 40, borderRadius: 12,
+          background: BLUE_MID, display: "flex", alignItems: "center",
+          justifyContent: "center", fontSize: 18, color: WHITE,
+          fontWeight: 800, flexShrink: 0,
+        }}>✦</div>
+        <div>
+          <div style={{ color: WHITE, fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px" }}>
+            StemMatch
+          </div>
+          <div style={{ color: BLUE_PALE, fontSize: 10, fontWeight: 700, letterSpacing: "0.8px", textTransform: "uppercase" }}>
+            Women in STEM
+          </div>
         </div>
       </div>
 
-      <nav style={{ flex: 1, padding: "12px 0", overflowY: "auto" }}>
+      {/* Nav */}
+      <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
         {NAV.map((item) => (
           <button
-  key={item.id}
-  onClick={() => onNav(item.id)}
-  style={{
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    padding: "11px 20px",
-    background: active === item.id ? "#BBD7FF" : "transparent",
-    border: "none",
-    borderRight:
-      active === item.id ? "3px solid #1C4D8D" : "3px solid transparent",
-    color: active === item.id ? "#1C4D8D" : "#1A1A1A",
-    cursor: "pointer",
-    fontSize: 14,
-    fontWeight: active === item.id ? 600 : 400,
-    textAlign: "left",
-    transition: "all 0.15s",
-  }}
->
-  <span style={{ color: "#1C4D8D" }}>{item.icon}</span>
-  {item.label}
-</button>
-
+            key={item.id}
+            onClick={() => onNav(item.id)}
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "12px 16px",
+              borderRadius: 12,
+              border: "none",
+              background: active === item.id ? BLUE_MID : "transparent",
+              color: active === item.id ? WHITE : BLUE_PALE,
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 700,
+              textAlign: "left",
+              boxShadow: active === item.id ? "0 4px 14px rgba(27,91,232,0.4)" : "none",
+              transition: "all 0.15s",
+              fontFamily: "'Sora', sans-serif",
+            }}
+          >
+            <span style={{ width: 20, textAlign: "center" }}>{item.icon}</span>
+            {item.label}
+          </button>
         ))}
       </nav>
 
-      <div
-        style={{
-          padding: "16px 20px",
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            marginBottom: 12,
-          }}
-        >
-          <Avatar initials={user?.avatar} color={user?.color} size={32} />
+      {/* Bottom user section */}
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <Avatar initials={user?.avatar} color={user?.color} size={34} />
           <div>
-            <div
-              style={{
-                color: "#E5E7EB",
-                fontSize: 13,
-                fontWeight: 600,
-              }}
-            >
+            <div style={{ color: WHITE, fontSize: 13, fontWeight: 700, fontFamily: "'Sora', sans-serif" }}>
               {user?.name?.split(" ")[0]}
             </div>
-            <div
-              style={{
-                color: "#4B5563",
-                fontSize: 11,
-                textTransform: "capitalize",
-              }}
-            >
+            <div style={{ color: BLUE_PALE, fontSize: 11, fontWeight: 600, textTransform: "capitalize", fontFamily: "'Sora', sans-serif" }}>
               {user?.role}
             </div>
           </div>
@@ -140,13 +115,15 @@ function Sidebar({ active, onNav, user, onLogout }) {
           onClick={onLogout}
           style={{
             width: "100%",
-            background: "rgba(239,68,68,0.1)",
-            color: "#EF4444",
-            border: "1px solid rgba(239,68,68,0.2)",
-            borderRadius: 8,
-            padding: "8px",
-            fontSize: 12,
+            background: "transparent",
+            color: "#FF8A8A",
+            border: "1.5px solid rgba(255,255,255,0.15)",
+            borderRadius: 10,
+            padding: "9px",
+            fontSize: 13,
+            fontWeight: 700,
             cursor: "pointer",
+            fontFamily: "'Sora', sans-serif",
           }}
         >
           Sign Out
@@ -160,7 +137,7 @@ function Sidebar({ active, onNav, user, onLogout }) {
 export default function App() {
   const { state } = useGlobal();
 
-  const [screen, setScreen] = useState("landing"); // landing | signup | login | app
+  const [screen, setScreen] = useState("landing");
   const [user, setUser] = useState(null);
   const [page, setPage] = useState("swipe");
   const [activeChat, setActiveChat] = useState(null);
@@ -177,19 +154,14 @@ export default function App() {
     setPage("swipe");
   };
 
-  // If chatting, show ChatPage full-screen
   if (screen === "app" && activeChat) {
-    return (
-      <ChatPage mentor={activeChat} onBack={() => setActiveChat(null)} />
-    );
+    return <ChatPage mentor={activeChat} onBack={() => setActiveChat(null)} />;
   }
 
-  // Landing
   if (screen === "landing") {
     return <LandingPage onEnter={setScreen} />;
   }
 
-  // Auth
   if (screen === "signup" || screen === "login") {
     return (
       <AuthPage
@@ -201,44 +173,29 @@ export default function App() {
     );
   }
 
-  // Main App Shell
   return (
-    <div
-      style={{
-        display: "flex",
-        fontFamily: "DM Sans, sans-serif",
-        background: "#080611",
-        minHeight: "100vh",
-        color: "#F9FAFB",
-      }}
-    >
+    <div style={{
+      display: "flex",
+      fontFamily: "'Sora', sans-serif",
+      background: "#EEF4FF",
+      minHeight: "100vh",
+    }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap');`}</style>
+
       <Sidebar active={page} onNav={setPage} user={user} onLogout={handleLogout} />
 
-      <main
-        style={{
-          marginLeft: 220,
-          flex: 1,
-          padding: "32px",
-          boxSizing: "border-box",
-        }}
-      >
+      <main style={{
+        marginLeft: 240,
+        flex: 1,
+        padding: "32px",
+        boxSizing: "border-box",
+      }}>
         {page === "swipe" && user.role === "mentee" && <SwipePage />}
-
         {page === "inbox" && user.role === "mentor" && <MentorInbox />}
-        
-        {page === "pending" && user.role === "mentee" && (
-          <PendingPage user={user} />
-        )}
-        {page === "matches" && (
-          <MatchesPage onOpenChat={(mentor) => setActiveChat(mentor)} />
-        )}
-
-        {page === "profile" && (
-          <ProfilePage user={user} setUser={setUser} />
-        )}
-
+        {page === "pending" && user.role === "mentee" && <PendingPage user={user} />}
+        {page === "matches" && <MatchesPage onOpenChat={(mentor) => setActiveChat(mentor)} />}
+        {page === "profile" && <ProfilePage user={user} setUser={setUser} />}
       </main>
     </div>
   );
 }
-

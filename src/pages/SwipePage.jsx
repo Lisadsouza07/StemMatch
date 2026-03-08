@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+<style>{`@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap');`}</style>
 import MentorCard from "../components/MentorCard.jsx";
 import FullProfileSheet from "../components/FullProfileSheet.jsx";
 import SwipeControls from "../components/SwipeControls.jsx";
@@ -41,7 +42,8 @@ export default function SwipePage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        background: "#F0F7FF",
+        background: "#EEF4FF",
+        fontFamily: "'Sora', sans-serif",
       }}
     >
       {currentMentor ? (
