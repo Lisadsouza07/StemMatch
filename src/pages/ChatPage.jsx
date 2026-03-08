@@ -1,36 +1,45 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useGlobal } from "../context/GlobalContext.jsx";
+import { sendMessage, subscribeToMessages } from "../config/messagingService.js";
 
 export default function ChatPage({ mentor, user, onBack }) {
-  const { state, dispatch } = useGlobal();
+  const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
-
-  const matchId = mentor.id;
-  const messages = state.messages?.[matchId] || [];
-
+  const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);
+
+  // Subscribe to real-time messages
+  useEffect(() => {
+    if (!user?.uid || !mentor?.uid) return;
+
+    setLoading(true);
+    const unsubscribe = subscribeToMessages(
+      user.uid,
+      mentor.uid,
+      (msgs) => {
+        setMessages(msgs);
+        setLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [user?.uid, mentor?.uid]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = () => {
-    if (!text.trim()) return;
+  const handleSendMessage = async () => {
+    if (!text.trim() || !user?.uid || !mentor?.uid) return;
 
-    dispatch({
-      type: "SEND_MESSAGE",
-      payload: {
-        matchId,
-        message: {
-          id: Date.now(),
-          text,
-          senderId: user?.id, // FIXED
-          timestamp: new Date().toISOString(),
-        },
-      },
-    });
-
+    const messageText = text;
     setText("");
+
+    try {
+      await sendMessage(user.uid, mentor.uid, messageText);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setText(messageText); // Restore text if send fails
+    }
   };
 
   return (
@@ -69,7 +78,10 @@ export default function ChatPage({ mentor, user, onBack }) {
         </button>
 
         <img
-          src={mentor.photo}
+          src={
+            mentor.photo ||
+            `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect fill='${encodeURIComponent(mentor.color || "%231B5BE8")}' width='40' height='40'/%3E%3Ctext x='50%' y='50%' font-size='18' font-weight='bold' text-anchor='middle' dominant-baseline='central' fill='white' font-family='Sora'%3E${mentor.avatar || mentor.name?.slice(0, 1).toUpperCase() || "U"}%3C/text%3E%3C/svg%3E`
+          }
           alt={mentor.name}
           style={{
             width: 40,
@@ -94,7 +106,7 @@ export default function ChatPage({ mentor, user, onBack }) {
         }}
       >
         {messages.map((msg) => {
-          const isMe = msg.senderId === user?.id; // FIXED
+          const isMe = msg.senderId === user?.uid;
 
           return (
             <div
@@ -146,7 +158,7 @@ export default function ChatPage({ mentor, user, onBack }) {
         />
 
         <button
-          onClick={sendMessage}
+          onClick={handleSendMessage}
           style={{
             padding: "12px 18px",
             borderRadius: 12,

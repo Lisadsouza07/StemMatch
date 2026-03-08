@@ -1,7 +1,7 @@
 export default [
   {
     id: 1,
-    name: "Dr. Aisha Patel",
+    name: "Jenny Anderson",
     age: 34,
     field: "Computer Science",
     photo: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",

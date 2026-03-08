@@ -15,20 +15,26 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case "SEND_REQUEST":
+      // action.payload should have { sender: currentUser, recipient: mentor }
+      const request = {
+        id: action.payload.recipient?.id || action.payload.recipient?.uid,
+        sender: action.payload.sender,
+        recipient: action.payload.recipient,
+      };
       return {
         ...state,
-        sentRequests: [...state.sentRequests, action.payload],
-        pendingRequests: [...state.pendingRequests, action.payload],
+        sentRequests: [...state.sentRequests, request],
+        pendingRequests: [...state.pendingRequests, request],
       };
 
     case "CANCEL_REQUEST":
       return {
         ...state,
         sentRequests: state.sentRequests.filter(
-          (m) => m.id !== action.payload.id
+          (req) => (req.recipient?.id || req.recipient?.uid || req.id) !== (action.payload.id || action.payload.uid)
         ),
         pendingRequests: state.pendingRequests.filter(
-          (m) => m.id !== action.payload.id
+          (req) => (req.recipient?.id || req.recipient?.uid || req.id) !== (action.payload.id || action.payload.uid)
         ),
       };
 
@@ -36,7 +42,7 @@ function reducer(state, action) {
       return {
         ...state,
         pendingRequests: state.pendingRequests.filter(
-          (m) => m.id !== action.payload.id
+          (req) => (req.sender?.id || req.sender?.uid || req.id) !== (action.payload.id || action.payload.uid)
         ),
         acceptedMatches: [...state.acceptedMatches, action.payload],
       };
@@ -45,7 +51,7 @@ function reducer(state, action) {
       return {
         ...state,
         pendingRequests: state.pendingRequests.filter(
-          (m) => m.id !== action.payload.id
+          (req) => (req.sender?.id || req.sender?.uid || req.id) !== (action.payload.id || action.payload.uid)
         ),
       };
 

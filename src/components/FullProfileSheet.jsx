@@ -3,6 +3,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiX } from "react-icons/fi";
 
 export default function FullProfileSheet({ mentor, onClose, onRequest }) {
+  if (!mentor) return null;
+
+  // Support both old format and Firebase format
+  const name = mentor.name || "Unknown";
+  const age = mentor.age || "";
+  const photo = mentor.photo || (
+    // Fallback: Create a colored avatar background with initials
+    `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='240'%3E%3Crect fill='${encodeURIComponent(mentor.color || "%231B5BE8")}' width='200' height='240'/%3E%3Ctext x='50%' y='50%' font-size='80' font-weight='bold' text-anchor='middle' dominant-baseline='central' fill='white' font-family='Sora'%3E${mentor.avatar || mentor.name?.slice(0, 2).toUpperCase() || "M"}%3C/text%3E%3C/svg%3E`
+  );
+  const field = mentor.field || "Field Not Specified";
+  const aboutFull = mentor.aboutFull || mentor.bio || "";
+  const hobbies = mentor.hobbies || [];
+  const interests = mentor.interests || [];
+  const skills = mentor.skills || [];
+  const experience = mentor.experience || "";
+  const education = mentor.education || "";
+  const year = mentor.year || "";
+  const availability = mentor.availability || "";
+
   return (
     <AnimatePresence>
       {mentor && (
@@ -80,8 +99,8 @@ export default function FullProfileSheet({ mentor, onClose, onRequest }) {
             {/* PHOTO */}
             <div style={{ textAlign: "center", marginBottom: 20 }}>
               <img
-                src={mentor.photo}
-                alt={mentor.name}
+                src={photo}
+                alt={name}
                 style={{
                   width: 140,
                   height: 180,
@@ -102,7 +121,7 @@ export default function FullProfileSheet({ mentor, onClose, onRequest }) {
                 marginBottom: 4,
               }}
             >
-              {mentor.name}, {mentor.age}
+              {name}{age ? `, ${age}` : ""}
             </div>
 
             <div
@@ -113,19 +132,19 @@ export default function FullProfileSheet({ mentor, onClose, onRequest }) {
                 marginBottom: 20,
               }}
             >
-              {mentor.field}
+              {field}
             </div>
 
             {/* SECTIONS */}
-            <Section title="About Me" text={mentor.aboutFull} />
-            <Section title="Area of Study" text={mentor.field} />
-            <Section title="Hobbies" text={mentor.hobbies?.join(", ")} />
-            <Section title="Interests" text={mentor.interests?.join(", ")} />
-            <Section title="Skills" text={mentor.skills?.join(", ")} />
-            <Section title="Experience" text={mentor.experience} />
-            <Section title="Education" text={mentor.education} />
-            <Section title="Year / Role" text={mentor.year} />
-            <Section title="Availability" text={mentor.availability} />
+            <Section title="About Me" text={aboutFull} />
+            <Section title="Area of Study" text={field} />
+            <Section title="Hobbies" text={hobbies.length > 0 ? hobbies.join(", ") : undefined} />
+            <Section title="Interests" text={interests.length > 0 ? interests.join(", ") : undefined} />
+            <Section title="Skills" text={skills.length > 0 ? skills.join(", ") : undefined} />
+            <Section title="Experience" text={experience} />
+            <Section title="Education" text={education} />
+            <Section title="Year / Role" text={year} />
+            <Section title="Availability" text={availability} />
 
             {/* REQUEST BUTTON */}
             <button
