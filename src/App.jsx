@@ -12,6 +12,8 @@ import PendingPage from "./pages/PendingPage.jsx";
 
 import Avatar from "./components/Avatar.jsx";
 import { useGlobal } from "./context/GlobalContext.jsx";
+import { FirebaseAuthProvider, useFirebaseAuth } from "./config/FirebaseAuthContext.jsx";
+import { logoutUser } from "./config/authService.js";
 
 const BLUE_DARK = "#0A2463";
 const BLUE_MID = "#1B5BE8";
@@ -134,28 +136,58 @@ function Sidebar({ active, onNav, user, onLogout }) {
 }
 
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
-export default function App() {
+function AppContent() {
   const { state } = useGlobal();
+  const { user, loading, logout } = useFirebaseAuth();
 
   const [screen, setScreen] = useState("landing");
-  const [user, setUser] = useState(null);
   const [page, setPage] = useState("swipe");
   const [activeChat, setActiveChat] = useState(null);
 
-  const handleAuth = (u) => {
-    setUser(u);
-    setScreen("app");
-    setPage(u.role === "mentor" ? "inbox" : "swipe");
+  // Auto-navigate based on auth state
+  useEffect(() => {
+    if (user) {
+      setScreen("app");
+      setPage(user.role === "mentor" ? "inbox" : "swipe");
+    } else {
+      setScreen("landing");
+    }
+  }, [user]);
+
+  const handleAuth = (authenticatedUser) => {
+    // Auth is handled automatically by Firebase context
+    // This is called after successful signup/login
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    setScreen("landing");
-    setPage("swipe");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setScreen("landing");
+      setPage("swipe");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
+
+  if (loading) {
+    return (
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        background: "linear-gradient(135deg, #0A2463 0%, #0D2F7A 40%, #0A1A4E 100%)",
+        fontFamily: "'Sora', sans-serif",
+        color: "white",
+        fontSize: 18,
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   if (screen === "app" && activeChat) {
-    return <ChatPage mentor={activeChat} onBack={() => setActiveChat(null)} />;
+    return <ChatPage mentor={activeChat} user={user} onBack={() => setActiveChat(null)} />;
   }
 
   if (screen === "landing") {
@@ -163,14 +195,7 @@ export default function App() {
   }
 
   if (screen === "signup" || screen === "login") {
-    return (
-      <AuthPage
-        mode={screen}
-        onAuth={handleAuth}
-        users={[]}
-        setUsers={() => {}}
-      />
-    );
+    return <AuthPage mode={screen} onAuth={handleAuth} />;
   }
 
   return (
@@ -190,12 +215,20 @@ export default function App() {
         padding: "32px",
         boxSizing: "border-box",
       }}>
-        {page === "swipe" && user.role === "mentee" && <SwipePage />}
-        {page === "inbox" && user.role === "mentor" && <MentorInbox />}
-        {page === "pending" && user.role === "mentee" && <PendingPage user={user} />}
+        {page === "swipe" && user?.role === "mentee" && <SwipePage />}
+        {page === "inbox" && user?.role === "mentor" && <MentorInbox />}
+        {page === "pending" && user?.role === "mentee" && <PendingPage user={user} />}
         {page === "matches" && <MatchesPage onOpenChat={(mentor) => setActiveChat(mentor)} />}
-        {page === "profile" && <ProfilePage user={user} setUser={setUser} />}
+        {page === "profile" && <ProfilePage user={user} setUser={() => {}} />}
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <FirebaseAuthProvider>
+      <AppContent />
+    </FirebaseAuthProvider>
   );
 }

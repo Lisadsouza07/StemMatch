@@ -1,47 +1,55 @@
 
 import React, { useState } from "react";
+import { registerUser, loginUser } from "../config/authService.js";
 
 const BLUE_DARK = "#0A2463";
 const BLUE_MID = "#1B5BE8";
 const BLUE_PALE = "#D6E4FF";
 const WHITE = "#FFFFFF";
 
-function AuthPage({ mode, onAuth, users, setUsers }) {
+function AuthPage({ mode, onAuth }) {
   const [isLogin, setIsLogin] = useState(mode === "login");
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "mentee" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handle = () => {
+  const handle = async () => {
     if (!form.email || !form.password) return;
+    
+    setLoading(true);
+    setError("");
 
-    if (isLogin) {
-      const user = users.find(
-        u => u.email === form.email && u.password === form.password
-      );
-      if (!user) { alert("Invalid email or password."); return; }
+    try {
+      let user;
+      
+      if (isLogin) {
+        user = await loginUser(form.email, form.password);
+      } else {
+        if (!form.name) {
+          setError("Please enter your name");
+          setLoading(false);
+          return;
+        }
+        
+        user = await registerUser(form.email, form.password, form.name, form.role, {
+          field: "Computer Science",
+          skills: [],
+          goals: [],
+          style: "Weekly check-ins",
+          timezone: "PST",
+          bio: "",
+          avatar: form.name?.slice(0, 2).toUpperCase() || "US",
+          color: BLUE_MID,
+          experience: "",
+        });
+      }
+      
       onAuth(user);
-      return;
+    } catch (err) {
+      setError(err.message || "Authentication failed");
+    } finally {
+      setLoading(false);
     }
-
-    const newUser = {
-      id: Date.now(),
-      role: form.role,
-      name: form.name || "New User",
-      email: form.email,
-      password: form.password,
-      field: "Computer Science",
-      skills: [],
-      goals: [],
-      style: "Weekly check-ins",
-      timezone: "PST",
-      bio: "",
-      avatar: form.name?.slice(0, 2).toUpperCase() || "ME",
-      color: BLUE_MID,
-      experience: "",
-      isNew: true,
-    };
-
-    setUsers([...users, newUser]);
-    onAuth(newUser);
   };
 
   const inputStyle = {
@@ -169,23 +177,40 @@ function AuthPage({ mode, onAuth, users, setUsers }) {
         {/* Submit */}
         <button
           onClick={handle}
+          disabled={loading}
           style={{
             width: "100%",
-            background: "linear-gradient(135deg, #1B5BE8, #3B82F6)",
+            background: loading ? "#555" : "linear-gradient(135deg, #1B5BE8, #3B82F6)",
             color: WHITE,
             border: "none",
             borderRadius: 12,
             padding: "14px",
             fontSize: 16,
             fontWeight: 700,
-            cursor: "pointer",
+            cursor: loading ? "not-allowed" : "pointer",
             fontFamily: "'Sora', sans-serif",
             boxShadow: "0 6px 24px rgba(27,91,232,0.45)",
             marginTop: isLogin ? 8 : 0,
           }}
         >
-          {isLogin ? "Sign In" : "Create Account"} →
+          {loading ? "Loading..." : (isLogin ? "Sign In" : "Create Account")} →
         </button>
+
+        {/* Error Message */}
+        {error && (
+          <div style={{
+            marginTop: 12,
+            padding: "10px 12px",
+            background: "rgba(255,100,100,0.2)",
+            border: "1px solid rgba(255,100,100,0.5)",
+            borderRadius: 8,
+            color: "#FF6B6B",
+            fontSize: 13,
+            textAlign: "center",
+          }}>
+            {error}
+          </div>
+        )}
 
         {/* Toggle */}
         <p style={{ color: "#6B7280", textAlign: "center", marginTop: 20, fontSize: 14 }}>

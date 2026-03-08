@@ -14,6 +14,16 @@ export default function MentorCard({
   onSwipeLeft,
   onSwipeRight,
 }) {
+  // Support both old format and Firebase format
+  const name = mentor.name || "Unknown Mentor";
+  const age = mentor.age || ""; // Ages not always available
+  const photo = mentor.photo || (
+    // Fallback: Create a colored avatar background with initials
+    `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect fill='${encodeURIComponent(mentor.color || "%231B5BE8")}' width='400' height='400'/%3E%3Ctext x='50%' y='50%' font-size='120' font-weight='bold' text-anchor='middle' dominant-baseline='central' fill='white' font-family='Sora'%3E${mentor.avatar || mentor.name?.slice(0, 2).toUpperCase() || "M"}%3C/text%3E%3C/svg%3E`
+  );
+  const aboutShort = mentor.aboutShort || mentor.bio || mentor.field || "Mentor";
+  const compatibilityScore = mentor.compatibilityScore || 85;
+  const skills = mentor.skills || [];
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-12, 12]);
   const opacity = useTransform(x, [-300, 0, 300], [0.4, 1, 0.4]);
@@ -65,8 +75,8 @@ export default function MentorCard({
         }}
       >
         <img
-          src={mentor.photo}
-          alt={mentor.name}
+          src={photo}
+          alt={name}
           style={{
             width: "100%",
             height: "100%",
@@ -112,7 +122,7 @@ export default function MentorCard({
               fontFamily: "'Sora', sans-serif",
             }}
           >
-            {mentor.compatibilityScore}%
+            {compatibilityScore}%
           </span>
           <span
             style={{
@@ -146,7 +156,7 @@ export default function MentorCard({
               fontFamily: "'Sora', sans-serif",
             }}
           >
-            {mentor.name}, {mentor.age}
+            {name}{age ? `, ${age}` : ""}
           </div>
           <div
             style={{
@@ -157,7 +167,7 @@ export default function MentorCard({
               fontFamily: "'Sora', sans-serif",
             }}
           >
-            {mentor.aboutShort}
+            {aboutShort}
           </div>
         </div>
       </div>
@@ -165,7 +175,7 @@ export default function MentorCard({
       {/* INFO SECTION */}
       <div style={{ padding: "14px 18px 18px", background: WHITE }}>
         {/* Tags */}
-        {mentor.skills && (
+        {skills && skills.length > 0 && (
           <div
             style={{
               display: "flex",
@@ -174,7 +184,7 @@ export default function MentorCard({
               marginBottom: 12,
             }}
           >
-            {mentor.skills.map((tag) => (
+            {skills.map((tag) => (
               <span
                 key={tag}
                 style={{
@@ -194,7 +204,7 @@ export default function MentorCard({
         )}
 
         {/* Short bio */}
-        {mentor.aboutShort && (
+        {aboutShort && (
           <div
             style={{
               fontSize: 12,
@@ -205,7 +215,7 @@ export default function MentorCard({
               fontFamily: "'Sora', sans-serif",
             }}
           >
-            {mentor.aboutShort}
+            {aboutShort}
           </div>
         )}
 
