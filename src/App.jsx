@@ -97,38 +97,64 @@ function Sidebar({ active, onNav, user, onLogout }) {
         ))}
       </nav>
 
-      {/* Bottom user section */}
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: 20, display: "flex", flexDirection: "column", gap: 12 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <Avatar initials={user?.avatar} color={user?.color} size={34} />
-          <div>
-            <div style={{ color: WHITE, fontSize: 13, fontWeight: 700, fontFamily: "'Sora', sans-serif" }}>
-              {user?.name?.split(" ")[0]}
-            </div>
-            <div style={{ color: BLUE_PALE, fontSize: 11, fontWeight: 600, textTransform: "capitalize", fontFamily: "'Sora', sans-serif" }}>
-              {user?.role}
-            </div>
-          </div>
-        </div>
+     {/* Bottom user section */}
+<div
+  style={{
+    borderTop: "1px solid rgba(255,255,255,0.08)",
+    paddingTop: 18,
+    marginTop: "auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  }}
+>
+  {/* Avatar + name */}
+  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+    <Avatar initials={user?.avatar} color={user?.color} size={32} />
 
-        <button
-          onClick={onLogout}
-          style={{
-            width: "100%",
-            background: "transparent",
-            color: "#FF8A8A",
-            border: "1.5px solid rgba(255,255,255,0.15)",
-            borderRadius: 10,
-            padding: "9px",
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-            fontFamily: "'Sora', sans-serif",
-          }}
-        >
-          Sign Out
-        </button>
+    <div>
+      <div
+        style={{
+          color: WHITE,
+          fontSize: 13,
+          fontWeight: 700,
+          fontFamily: "'Sora', sans-serif",
+        }}
+      >
+        {user?.name?.split(" ")[0]}
       </div>
+
+      <div
+        style={{
+          color: BLUE_PALE,
+          fontSize: 11,
+          fontWeight: 600,
+          textTransform: "capitalize",
+          fontFamily: "'Sora', sans-serif",
+        }}
+      >
+        {user?.role}
+      </div>
+    </div>
+  </div>
+
+  {/* Tiny logout icon */}
+  <button
+    onClick={onLogout}
+    style={{
+      background: "transparent",
+      border: "none",
+      color: "#FF6B6B",
+      fontSize: 18,
+      cursor: "pointer",
+      padding: 4,
+      lineHeight: 1,
+    }}
+    title="Sign Out"
+  >
+    🚪
+  </button>
+</div>
     </div>
   );
 }
