@@ -1,93 +1,194 @@
-MenMatch — Modern Mentorship, Reimagined
-A Hinge‑inspired mentor discovery platform for women in STEM.
+# 🌸 MenMatch — Modern Mentorship, Reimagined
 
-📌 Overview
+A platform connecting **women in STEM** with mentors who empower, guide, and uplift.
 
-MenMatch is a mentorship platform designed to make finding the right mentor feel intuitive, human, and meaningful. Instead of scrolling through long lists or filling out rigid forms, mentees explore mentors through minimal, elegant swipe cards inspired by Hinge’s clean, intentional design.
-The experience is simple:
-Mentees swipe through mentor profiles
-Swipe right to send a mentorship request
-Mentors review and accept requests
-Accepted pairs unlock messaging
-This creates a thoughtful, modern mentorship flow that feels engaging without being overwhelming or “gamified.”
+---
 
-🎯 Core Concept
+# ✨ Overview
 
-MenMatch blends the best parts of dating‑app UX with the professionalism of mentorship programs.
-✔ Mentees swipe through mentor profiles
-Each mentor card includes:
-Photo
-Name + age
-Area of study
-Compatibility score
-Short “About Me”
-Interests / hobbies
-Year of study or experience
-A “More Info” panel for full details
-✔ Swipe right = send mentorship request
-Swipe left = skip
-Swipe right = “I’d like this mentor”
-A subtle confirmation appears — calm, classy, not flashy.
-✔ Mentors receive requests (no swiping required)
-Mentors see:
-A list of mentees who requested them
-Mentee profile previews
-Accept / decline buttons
-✔ Accepting creates a match
-Once a mentor accepts:
-Both sides are notified
-The match appears in the Messages tab
-Chat becomes available
-✔ Messaging is only unlocked for accepted matches
-This keeps communication intentional and safe.
+**MenMatch** is a modern mentorship platform designed to make finding the right mentor feel **intuitive, human, and meaningful**.
 
-🧠 Why This Model Works
+Instead of scrolling through long lists or filling out rigid forms, mentees explore mentors through **minimal, elegant swipe cards** inspired by modern matching apps. The experience is simple and intentional:
 
-For mentees:
-Fun, modern, low‑pressure discovery
-Clear compatibility indicators
-Ability to explore mentors at their own pace
-For mentors:
-No swiping or decision fatigue
-Full control over who they mentor
-A clean inbox of mentee requests
-For the platform:
-Simple, scalable matching logic
-Professional tone with engaging UX
-A unique approach to mentorship that feels fresh and human
+1. Mentees swipe through mentor profiles
+2. Swipe right to send a mentorship request
+3. Mentors review incoming requests
+4. Accepted pairs unlock messaging
 
-🏗 Current Architecture (High‑Level)
+This creates a **thoughtful mentorship flow** that is engaging while still maintaining a professional and supportive environment.
 
-MenMatch is built as a single‑page React/Vite application with modular components and clean state management.
-Global State Includes:
-user (current mentee or mentor)
-pendingRequests (for mentors)
-acceptedMatches
-messages (per‑match chat history)
-skills, goals, posts, etc.
-Pages:
-Dashboard
-Swipe Mentors
-Messages
-Profile
-Mentor Request Inbox
-Community (optional)
-Components:
-Avatar
-Badge
-ScoreBar
-ProgressBar
-MentorCard (coming soon)
-FullProfileSheet (coming soon)
+Our goal is to build a **safe, inclusive space where women in STEM can connect with mentors who understand their journey**.
 
-🎨 Design Direction
+---
 
-MenMatch follows a Hinge‑style aesthetic:
-Minimal
-Classy
-Soft shadows
-Clean typography
-Muted purples and neutrals
-Gentle animations
-Spacious layouts
-The goal is to create a calm, intentional environment that feels welcoming and professional — not loud or gamified.
+# 🎯 Core Concept
+
+MenMatch blends the best parts of **modern discovery UX** with the structure of traditional mentorship programs.
+
+### ✔ Swipe-Based Mentor Discovery
+
+Mentees explore mentors through **profile cards** containing:
+
+* Photo
+* Name + age
+* Area of study or industry
+* Compatibility score
+* Short “About Me”
+* Interests / hobbies
+* Years of experience
+* Expandable **More Info** panel
+
+---
+
+### ✔ Mentorship Requests
+
+Mentees can:
+
+* **Swipe left** → Skip
+* **Swipe right** → Send mentorship request
+
+A subtle confirmation appears to keep the experience calm and professional rather than overly gamified.
+
+---
+
+### ✔ Mentor Request Inbox
+
+Mentors **do not swipe**.
+
+Instead, they receive a list of mentees who requested them, including:
+
+* Mentee profile previews
+* Accept / Decline options
+
+This reduces decision fatigue and gives mentors **full control over who they mentor**.
+
+---
+
+### ✔ Match & Messaging
+
+When a mentor accepts a request:
+
+* Both users are notified
+* The match appears in the **Messages tab**
+* **Private chat unlocks**
+
+Messaging is **only available for accepted matches**, keeping communication intentional and safe.
+
+---
+
+# 🧠 Why This Model Works
+
+### For Mentees
+
+* Fun, modern mentor discovery
+* Clear compatibility indicators
+* Explore mentors at their own pace
+* Less intimidating than traditional mentorship signups
+
+### For Mentors
+
+* No swiping or endless browsing
+* Full control over requests
+* Clean inbox of potential mentees
+* Flexible mentorship commitment
+
+### For the Platform
+
+* Simple matching logic
+* Engaging but professional UX
+* Scalable architecture
+* Encourages meaningful mentorship relationships
+
+---
+
+# 🏗 Application Architecture
+
+MenMatch is built as a **single-page React application** with modular components and centralized state management.
+
+## Global State
+
+The app manages core data such as:
+
+* `user` (current mentee or mentor)
+* `pendingRequests`
+* `acceptedMatches`
+* `messages`
+* `skills`
+* `goals`
+* `posts`
+
+---
+
+## Pages
+
+* **Dashboard**
+* **Swipe Mentors**
+* **Messages**
+* **Profile**
+* **Mentor Request Inbox**
+* **Community (optional)**
+
+---
+
+## Components
+
+Reusable UI components include:
+
+* `Avatar`
+* `Badge`
+* `ScoreBar`
+* `ProgressBar`
+* `MentorCard` *(coming soon)*
+* `FullProfileSheet` *(coming soon)*
+
+---
+
+# 🧰 Tech Stack
+
+Core technologies used in the project:
+
+* **React**
+* **TypeScript**
+* **Vite**
+* **SWC** (fast compiler)
+* **Node.js + npm**
+* **Tailwind CSS** *(for styling and responsive UI)*
+
+---
+
+# 📱 Features
+
+### Current / In Progress
+
+* Swipe-based mentor discovery
+* Mentor request system
+* Profile cards with compatibility indicators
+* Responsive modern UI
+* Modular React component architecture
+
+### Planned Features
+
+* Authentication (secure login for mentors and mentees)
+* Meeting scheduling
+* Mentor-mentee progress tracking
+* Community discussion space
+* Smart compatibility matching
+
+---
+
+# 🌱 Vision
+
+Women in STEM often struggle to find accessible mentorship opportunities. MenMatch aims to **bridge that gap by making mentorship discovery approachable, modern, and human-centered.**
+
+By combining **technology, community, and mentorship**, the platform helps create meaningful relationships that support women in achieving their academic and professional goals.
+
+---
+
+# 🚀 Future Improvements
+
+* AI-powered mentor compatibility scoring
+* Calendar integrations
+* Video mentorship sessions
+* Community networking events
+* University partnerships
+
